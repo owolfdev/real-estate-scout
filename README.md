@@ -1,36 +1,30 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Scout
 
-## Getting Started
+Field catalog for Thai rental and flip prospects. Capture a sign or any notes, review the structured record, then keep photos, location, notes, and an optional renovation plan.
 
-First, run the development server:
+## Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Next.js 16
+- Supabase (`sb_publishable` + `sb_secret`)
+- OpenAI (vision + structured extraction)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Copy `.env.example` to `.env.local` and add:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (`sb_publishable_...`)
+   - `SUPABASE_SECRET_KEY` (`sb_secret_...`)
+   - `OPENAI_API_KEY`
+2. In the Supabase SQL editor, run `supabase/schema.sql`. Tables, types, and the storage bucket are prefixed with `realestate_scout_`.
+3. Create your login from `/login` (or disable email confirmation in Auth if you want to sign in immediately).
+4. `npm run dev`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Google Maps is optional. Until `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` is set, the map tab uses an OpenStreetMap placeholder.
 
-## Learn More
+## Capture flow
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Notes / listing text** and **sign photos** both go through OpenAI, not OCR.
+- Thai on signs is translated into English fields. The original photo and Thai text are kept.
+- Device GPS is captured at input time and can be edited before save or later.
+- Nothing is written until you confirm the preview.
+- The **gallery** is for walkthrough / condition photos only. Sign shots stay separate.
