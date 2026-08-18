@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import type { InputHTMLAttributes, TextareaHTMLAttributes } from "react";
 
 const control =
-  "h-9 w-full rounded-md border border-border bg-background px-3 text-sm text-foreground outline-none ring-ring/30 placeholder:text-muted-foreground focus:border-ring focus:ring-3";
+  "h-10 w-full rounded-md border border-border bg-background px-3 text-base text-foreground outline-none ring-ring/30 placeholder:text-muted-foreground focus:border-ring focus:ring-3";
 
 export function Label({
   children,

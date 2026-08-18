@@ -72,6 +72,27 @@
   body {
     @apply bg-background text-foreground font-mono;
   }
+
+  /* iOS zooms the page when a focused field is under 16px, then often
+     never restores scale. Keep every text control at 16px on WebKit. */
+  @supports (-webkit-touch-callout: none) {
+    input:not(
+      [type="checkbox"],
+      [type="radio"],
+      [type="range"],
+      [type="file"],
+      [type="hidden"],
+      [type="button"],
+      [type="submit"],
+      [type="reset"],
+      [type="image"],
+      [type="color"]
+    ),
+    textarea,
+    select {
+      font-size: 16px !important;
+    }
+  }
 }
 
 ::-webkit-scrollbar {
