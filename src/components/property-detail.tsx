@@ -90,7 +90,7 @@ export function PropertyDetail({
   const [saved, setSaved] = useState<PropertyDraft>(toDraft(property));
   const [draft, setDraft] = useState<PropertyDraft>(toDraft(property));
   const [editing, setEditing] = useState(false);
-  const [saving, setSaving] = useState(false);
+  const [busy, setBusy] = useState<"save" | "delete" | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const cover = media.find((item) => item.signed_url)?.signed_url;
 
@@ -180,34 +180,49 @@ export function PropertyDetail({
               />
               <div className="flex flex-wrap gap-3">
                 <Button
-                  disabled={saving}
+                  busy={busy === "save"}
+                  disabled={busy != null}
                   onClick={async () => {
-                    setSaving(true);
-                    const result = await updateProperty(property.id, draft);
-                    setSaving(false);
-                    if (result.error) {
-                      setMessage(result.error);
-                      return;
+                    setBusy("save");
+                    try {
+                      const result = await updateProperty(property.id, draft);
+                      if (result.error) {
+                        setMessage(result.error);
+                        return;
+                      }
+                      setSaved(draft);
+                      setEditing(false);
+                      setMessage("Saved");
+                    } finally {
+                      setBusy(null);
                     }
-                    setSaved(draft);
-                    setEditing(false);
-                    setMessage("Saved");
                   }}
                 >
-                  Save changes
+                  {busy === "save" ? "Saving…" : "Save changes"}
                 </Button>
-                <Button variant="secondary" onClick={cancelEdit}>
+                <Button variant="secondary" disabled={busy != null} onClick={cancelEdit}>
                   Cancel
                 </Button>
                 <Button
                   variant="danger"
+                  busy={busy === "delete"}
+                  disabled={busy != null}
                   onClick={async () => {
                     if (!confirm("Delete this prospect?")) return;
-                    await deleteProperty(property.id);
-                    router.push("/");
+                    setBusy("delete");
+                    try {
+                      const result = await deleteProperty(property.id);
+                      if (result.error) {
+                        setMessage(result.error);
+                        return;
+                      }
+                      router.push("/");
+                    } finally {
+                      setBusy(null);
+                    }
                   }}
                 >
-                  Delete
+                  {busy === "delete" ? "Deleting…" : "Delete"}
                 </Button>
               </div>
             </>

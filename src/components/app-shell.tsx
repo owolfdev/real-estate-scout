@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Camera, LayoutGrid } from "lucide-react";
 import { signOut } from "@/lib/actions/auth";
-import { Button } from "@/components/ui/button";
+import { FormSubmitButton } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 export function AppShell({
@@ -35,9 +35,9 @@ export function AppShell({
             </span>
             <ThemeToggle />
             <form action={signOut}>
-              <Button variant="ghost" size="sm" type="submit">
+              <FormSubmitButton variant="ghost" size="sm" pendingLabel="Signing out…">
                 Sign out
-              </Button>
+              </FormSubmitButton>
             </form>
           </div>
         </div>

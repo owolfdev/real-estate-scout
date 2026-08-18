@@ -15,6 +15,7 @@ export function NotesPanel({
 }) {
   const [body, setBody] = useState("");
   const [editing, setEditing] = useState<Record<string, string>>({});
+  const [busy, setBusy] = useState<string | null>(null);
 
   return (
     <div className="space-y-6">
@@ -25,13 +26,19 @@ export function NotesPanel({
           placeholder="Site notes, seller comments, red flags…"
         />
         <Button
-          disabled={!body.trim()}
+          busy={busy === "add"}
+          disabled={!body.trim() || busy != null}
           onClick={async () => {
-            await addNote(propertyId, body.trim());
-            setBody("");
+            setBusy("add");
+            try {
+              await addNote(propertyId, body.trim());
+              setBody("");
+            } finally {
+              setBusy(null);
+            }
           }}
         >
-          Add note
+          {busy === "add" ? "Adding…" : "Add note"}
         </Button>
       </div>
       <ol className="space-y-4">
@@ -51,16 +58,23 @@ export function NotesPanel({
                 <div className="flex gap-2">
                   <Button
                     size="sm"
+                    busy={busy === note.id}
+                    disabled={busy != null}
                     onClick={async () => {
-                      await updateNote(note.id, propertyId, editing[note.id]);
-                      setEditing((current) => {
-                        const next = { ...current };
-                        delete next[note.id];
-                        return next;
-                      });
+                      setBusy(note.id);
+                      try {
+                        await updateNote(note.id, propertyId, editing[note.id]);
+                        setEditing((current) => {
+                          const next = { ...current };
+                          delete next[note.id];
+                          return next;
+                        });
+                      } finally {
+                        setBusy(null);
+                      }
                     }}
                   >
-                    Save
+                    {busy === note.id ? "Saving…" : "Save"}
                   </Button>
                   <Button
                     size="sm"

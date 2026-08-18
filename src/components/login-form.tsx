@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { FormSubmitButton } from "@/components/ui/button";
 import { Field, Input } from "@/components/ui/field";
 import { signIn, signUp } from "@/lib/actions/auth";
 
@@ -49,12 +49,16 @@ export function LoginForm({ configured }: { configured: boolean }) {
           autoComplete={mode === "in" ? "current-password" : "new-password"}
         />
       </Field>
-      <Button type="submit" className="w-full" size="lg">
+      <FormSubmitButton
+        className="w-full"
+        size="lg"
+        pendingLabel={mode === "in" ? "Signing in…" : "Creating account…"}
+      >
         {mode === "in" ? "Sign in" : "Create account"}
-      </Button>
+      </FormSubmitButton>
       <button
         type="button"
-        className="w-full text-sm text-muted-foreground"
+        className="w-full text-sm text-muted-foreground active:opacity-70"
         onClick={() => setMode(mode === "in" ? "up" : "in")}
       >
         {mode === "in" ? "Need the first account?" : "Already have an account?"}
