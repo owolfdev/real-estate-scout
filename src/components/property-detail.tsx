@@ -98,7 +98,6 @@ export function PropertyDetail({
   function enterEdit() {
     setMessage(null);
     setEditing(true);
-    setTab("overview");
   }
 
   function cancelEdit() {
