@@ -240,6 +240,7 @@ export function PropertyDetail({
           media={media}
           lat={draft.lat}
           lng={draft.lng}
+          editing={editing}
         />
       )}
       {tab === "notes" && <NotesPanel propertyId={property.id} notes={notes} />}

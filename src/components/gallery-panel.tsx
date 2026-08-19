@@ -22,11 +22,13 @@ export function GalleryPanel({
   media,
   lat,
   lng,
+  editing = false,
 }: {
   propertyId: string;
   media: Media[];
   lat: number | null;
   lng: number | null;
+  editing?: boolean;
 }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -76,6 +78,30 @@ export function GalleryPanel({
     }
   }
 
+  async function remove(id: string) {
+    if (!confirm("Remove this photo?")) return;
+    setBusy(true);
+    setError(null);
+    try {
+      if (view?.index != null && viewItems[view.index]?.id === id) {
+        const remaining = viewItems.filter((item) => item.id !== id);
+        if (!remaining.length) setView(null);
+        else {
+          setView({
+            ...view,
+            index: Math.min(view.index, remaining.length - 1),
+          });
+        }
+      }
+      const result = await deleteMedia(id, propertyId);
+      if (result?.error) throw new Error(result.error);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not remove photo");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function upload(files: File[] | FileList | null, kind: "gallery" | "sign") {
     const list = files ? Array.from(files) : [];
     if (!list.length) return;
@@ -106,28 +132,32 @@ export function GalleryPanel({
           Condition photos only. Sign shots stay in their own strip so they are
           not mixed with walkthrough images.
         </p>
-        <div className="flex flex-wrap gap-2">
-          <Button onClick={startCamera} disabled={busy}>
-            <Camera className="size-4" />
-            Take photos
-          </Button>
-          <label>
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              className="sr-only"
-              onChange={(e) => {
-                upload(e.target.files, "gallery");
-                e.target.value = "";
-              }}
-            />
-            <span className="inline-flex h-9 cursor-pointer items-center gap-2 rounded-md border border-border bg-background px-4 text-sm font-medium active:bg-muted">
-              {busy ? <LoaderCircle className="size-4 animate-spin" /> : <Upload className="size-4" />}
-              From library
-            </span>
-          </label>
-        </div>
+        {editing ? (
+          <div className="flex flex-wrap gap-2">
+            <Button onClick={startCamera} disabled={busy}>
+              <Camera className="size-4" />
+              Take photos
+            </Button>
+            <label>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                className="sr-only"
+                onChange={(e) => {
+                  upload(e.target.files, "gallery");
+                  e.target.value = "";
+                }}
+              />
+              <span className="inline-flex h-9 cursor-pointer items-center gap-2 rounded-md border border-border bg-background px-4 text-sm font-medium active:bg-muted">
+                {busy ? <LoaderCircle className="size-4 animate-spin" /> : <Upload className="size-4" />}
+                From library
+              </span>
+            </label>
+          </div>
+        ) : (
+          <p className="text-xs text-muted-foreground">Edit to add or remove photos.</p>
+        )}
       </div>
 
       {gallery.length === 0 ? (
@@ -161,13 +191,17 @@ export function GalleryPanel({
                 ) : (
                   <div className="aspect-square" />
                 )}
-                <button
-                  type="button"
-                  className="absolute right-2 top-2 rounded-md bg-foreground/70 p-2 text-primary-foreground opacity-0 transition group-hover:opacity-100"
-                  onClick={() => deleteMedia(item.id, propertyId)}
-                >
-                  <Trash2 className="size-4" />
-                </button>
+                {editing && (
+                  <button
+                    type="button"
+                    className="absolute right-2 top-2 rounded-md bg-black/70 p-2 text-white active:scale-95"
+                    aria-label="Remove photo"
+                    disabled={busy}
+                    onClick={() => remove(item.id)}
+                  >
+                    <Trash2 className="size-4" />
+                  </button>
+                )}
               </figure>
             );
           })}
@@ -177,16 +211,18 @@ export function GalleryPanel({
       <div>
         <div className="mb-3 flex items-center justify-between">
           <h3 className="text-sm font-medium text-foreground">Sign captures</h3>
-          <label className="text-sm text-primary underline">
-            <input
-              type="file"
-              accept="image/*"
-              capture="environment"
-              className="sr-only"
-              onChange={(e) => upload(e.target.files, "sign")}
-            />
-            Add another sign
-          </label>
+          {editing && (
+            <label className="text-sm text-primary underline">
+              <input
+                type="file"
+                accept="image/*"
+                capture="environment"
+                className="sr-only"
+                onChange={(e) => upload(e.target.files, "sign")}
+              />
+              Add another sign
+            </label>
+          )}
         </div>
         {signs.length === 0 ? (
           <p className="text-sm text-muted-foreground">No sign photos attached.</p>
@@ -195,21 +231,33 @@ export function GalleryPanel({
             {signs.map((item) => {
               const viewIndex = signItems.findIndex((photo) => photo.id === item.id);
               return item.signed_url ? (
-                <button
-                  key={item.id}
-                  type="button"
-                  className="shrink-0 cursor-pointer"
-                  onClick={() =>
-                    viewIndex >= 0 && setView({ kind: "sign", index: viewIndex })
-                  }
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={item.signed_url}
-                    alt="Sign"
-                    className="h-32 rounded-xl object-cover"
-                  />
-                </button>
+                <div key={item.id} className="relative shrink-0">
+                  <button
+                    type="button"
+                    className="cursor-pointer"
+                    onClick={() =>
+                      viewIndex >= 0 && setView({ kind: "sign", index: viewIndex })
+                    }
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={item.signed_url}
+                      alt="Sign"
+                      className="h-32 rounded-xl object-cover"
+                    />
+                  </button>
+                  {editing && (
+                    <button
+                      type="button"
+                      className="absolute right-1 top-1 rounded-md bg-black/70 p-1.5 text-white active:scale-95"
+                      aria-label="Remove sign photo"
+                      disabled={busy}
+                      onClick={() => remove(item.id)}
+                    >
+                      <Trash2 className="size-3.5" />
+                    </button>
+                  )}
+                </div>
               ) : null;
             })}
           </div>
@@ -229,6 +277,7 @@ export function GalleryPanel({
           index={view.index}
           onClose={closeView}
           onIndex={moveView}
+          onDelete={editing ? remove : undefined}
         />
       )}
     </div>

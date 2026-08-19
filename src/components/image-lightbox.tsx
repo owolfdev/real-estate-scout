@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Trash2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export type LightboxItem = {
@@ -16,11 +16,13 @@ export function ImageLightbox({
   index,
   onClose,
   onIndex,
+  onDelete,
 }: {
   items: LightboxItem[];
   index: number;
   onClose: () => void;
   onIndex: (index: number) => void;
+  onDelete?: (id: string) => void;
 }) {
   const item = items[index];
   const multiple = items.length > 1;
@@ -83,15 +85,28 @@ export function ImageLightbox({
         <p className="text-sm text-white/70">
           {index + 1} / {items.length}
         </p>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-white hover:bg-white/10 hover:text-white"
-          aria-label="Close"
-          onClick={onClose}
-        >
-          <X className="size-5" />
-        </Button>
+        <div className="flex items-center gap-1">
+          {onDelete && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-white hover:bg-white/10 hover:text-white"
+              aria-label="Delete photo"
+              onClick={() => onDelete(item.id)}
+            >
+              <Trash2 className="size-5" />
+            </Button>
+          )}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-white hover:bg-white/10 hover:text-white"
+            aria-label="Close"
+            onClick={onClose}
+          >
+            <X className="size-5" />
+          </Button>
+        </div>
       </div>
 
       <div className="relative flex min-h-0 flex-1 items-center justify-center px-4 pb-6">
