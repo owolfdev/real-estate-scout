@@ -12,6 +12,7 @@ import { PropertyForm } from "@/components/property-form";
 import { PropertyView } from "@/components/property-view";
 import { RenovationPanel } from "@/components/renovation-panel";
 import { deleteProperty, updateProperty } from "@/lib/actions/properties";
+import { pickCover } from "@/lib/media";
 import {
   formatTHB,
   formatTHBPerSqm,
@@ -92,7 +93,7 @@ export function PropertyDetail({
   const [editing, setEditing] = useState(false);
   const [busy, setBusy] = useState<"save" | "delete" | null>(null);
   const [message, setMessage] = useState<string | null>(null);
-  const cover = media.find((item) => item.signed_url)?.signed_url;
+  const cover = pickCover(media.filter((item) => item.signed_url))?.signed_url;
 
   function enterEdit() {
     setMessage(null);

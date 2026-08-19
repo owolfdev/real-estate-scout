@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { requireUser } from "./require-user";
+import { pickCover } from "@/lib/media";
 import { storageBucket, tables } from "@/lib/supabase/tables";
 import type { Property, PropertyDraft } from "@/lib/types";
 
@@ -247,11 +248,20 @@ export async function listProperties(): Promise<PropertyListItem[]> {
         .order("created_at", { ascending: true })
     : { data: [] };
 
-  const coverByProperty = new Map<string, string>();
+  const mediaByProperty = new Map<
+    string,
+    { kind: string; storage_path: string }[]
+  >();
   for (const item of media ?? []) {
-    if (!coverByProperty.has(item.property_id)) {
-      coverByProperty.set(item.property_id, item.storage_path);
-    }
+    const list = mediaByProperty.get(item.property_id) ?? [];
+    list.push(item);
+    mediaByProperty.set(item.property_id, list);
+  }
+
+  const coverByProperty = new Map<string, string>();
+  for (const [id, items] of mediaByProperty) {
+    const cover = pickCover(items);
+    if (cover) coverByProperty.set(id, cover.storage_path);
   }
 
   const paths = [...coverByProperty.values()];
