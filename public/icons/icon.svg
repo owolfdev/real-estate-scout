@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Full-bleed app icon. iOS/Android apply their own mask. -->
+  <rect width="32" height="32" fill="#17181b"/>
+  <path
+    fill="#4ec9b0"
+    d="M20.6 8.1h3.1v4.4L27.2 15.4H24.6V26H18.1v-6.2h-4.2V26H7.4V15.4H4.8L16 5.8l4.6 4Z"
+  />
+  <rect x="13.9" y="19.8" width="4.2" height="6.2" fill="#17181b"/>
+</svg>
