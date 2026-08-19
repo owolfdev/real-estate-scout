@@ -33,7 +33,7 @@ export default async function HomePage() {
         </div>
         <Link
           href="/capture"
-          className="hidden h-9 items-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground sm:inline-flex"
+          className="hidden h-9 items-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground active:scale-95 active:opacity-80 sm:inline-flex"
         >
           New prospect
         </Link>

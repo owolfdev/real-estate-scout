@@ -28,19 +28,19 @@ export function Button({
       disabled={disabled || busy}
       aria-busy={busy || undefined}
       className={cn(
-        "inline-flex cursor-pointer items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-[color,background-color,opacity,transform,box-shadow] outline-none select-none touch-manipulation focus-visible:ring-[3px] focus-visible:ring-ring/50 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50",
+        "inline-flex cursor-pointer items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-[color,background-color,opacity,transform,box-shadow] outline-none select-none touch-manipulation focus-visible:ring-[3px] focus-visible:ring-ring/50 active:scale-[0.96] active:opacity-80 disabled:pointer-events-none disabled:opacity-50 disabled:active:scale-100 disabled:active:opacity-50",
         size === "sm" && "h-8 px-3",
         size === "md" && "h-9 px-4",
         size === "lg" && "h-10 px-6",
         size === "icon" && "size-9",
         variant === "primary" &&
-          "bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80",
+          "bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/70",
         variant === "secondary" &&
           "border border-border bg-background hover:bg-muted active:bg-muted",
         variant === "ghost" &&
           "hover:bg-muted hover:text-foreground active:bg-muted",
         variant === "danger" &&
-          "bg-destructive text-white hover:bg-destructive/90 active:bg-destructive/80",
+          "bg-destructive text-white hover:bg-destructive/90 active:bg-destructive/70",
         className,
       )}
       {...props}

@@ -151,8 +151,8 @@ export function PropertyDetail({
             key={item}
             type="button"
             onClick={() => setTab(item)}
-            className={`rounded-md px-4 py-2 text-sm capitalize ${
-              tab === item ? "bg-card text-foreground shadow-sm" : "text-muted-foreground"
+            className={`rounded-md px-4 py-2 text-sm capitalize active:scale-95 ${
+              tab === item ? "bg-card text-foreground shadow-sm" : "text-muted-foreground active:bg-card/70"
             }`}
           >
             {item === "reno" ? "Renovation" : item}

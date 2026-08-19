@@ -18,7 +18,7 @@ export function PropertyList({ properties }: { properties: PropertyListItem[] })
         </p>
         <Link
           href="/capture"
-          className="mt-6 inline-flex h-9 items-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground"
+          className="mt-6 inline-flex h-9 items-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground active:scale-95 active:opacity-80"
         >
           New prospect
         </Link>
@@ -32,7 +32,7 @@ export function PropertyList({ properties }: { properties: PropertyListItem[] })
         <Link
           key={property.id}
           href={`/properties/${property.id}`}
-          className="overflow-hidden rounded-lg border border-border bg-card transition hover:bg-muted/40"
+          className="overflow-hidden rounded-lg border border-border bg-card transition active:scale-[0.99] active:bg-muted/40 hover:bg-muted/40"
         >
           <div className="aspect-[16/10] bg-muted">
             {property.cover_url ? (

@@ -58,7 +58,7 @@ export function LoginForm({ configured }: { configured: boolean }) {
       </FormSubmitButton>
       <button
         type="button"
-        className="w-full text-sm text-muted-foreground active:opacity-70"
+        className="w-full text-sm text-muted-foreground active:scale-95 active:opacity-70"
         onClick={() => setMode(mode === "in" ? "up" : "in")}
       >
         {mode === "in" ? "Need the first account?" : "Already have an account?"}

@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { AppSplash } from "@/components/app-splash";
+import { NavigationProgress } from "@/components/navigation-progress";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
@@ -37,7 +39,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} flex min-h-full flex-col font-mono antialiased`}
       >
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem("scout-theme");var d=t==="dark"||((t==="system"||!t)&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.classList.add(d?"dark":"light")}catch(e){}`,
+          }}
+        />
         <ThemeProvider defaultTheme="system" storageKey="scout-theme">
+          <AppSplash />
+          <NavigationProgress />
           {children}
         </ThemeProvider>
       </body>

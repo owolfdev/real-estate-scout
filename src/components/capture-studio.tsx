@@ -110,7 +110,7 @@ export function CaptureStudio() {
             />
           </label>
 
-          <label className="flex cursor-pointer flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-border bg-card px-4 py-10 text-center">
+          <label className="flex cursor-pointer flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-border bg-card px-4 py-10 text-center active:scale-[0.99] active:bg-muted/50">
             {signPreview ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img

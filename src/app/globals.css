@@ -93,6 +93,30 @@
       font-size: 16px !important;
     }
   }
+
+  a,
+  button,
+  [role="button"],
+  label:has(> input[type="file"]) {
+    -webkit-tap-highlight-color: color-mix(
+      in oklab,
+      var(--foreground) 18%,
+      transparent
+    );
+    touch-action: manipulation;
+  }
+}
+
+@keyframes scout-progress {
+  0% {
+    transform: translateX(-120%);
+  }
+  60% {
+    transform: translateX(180%);
+  }
+  100% {
+    transform: translateX(280%);
+  }
 }
 
 ::-webkit-scrollbar {

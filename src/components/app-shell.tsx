@@ -17,15 +17,15 @@ export function AppShell({
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6 md:px-8">
           <Link
             href="/"
-            className="text-lg font-semibold tracking-tight transition-opacity hover:opacity-80"
+            className="text-lg font-semibold tracking-tight transition-opacity active:opacity-60 hover:opacity-80"
           >
             Scout
           </Link>
           <nav className="hidden items-center gap-8 text-sm text-muted-foreground sm:flex">
-            <Link href="/" className="hover:text-foreground">
+            <Link href="/" className="active:opacity-60 hover:text-foreground">
               Prospects
             </Link>
-            <Link href="/capture" className="hover:text-foreground">
+            <Link href="/capture" className="active:opacity-60 hover:text-foreground">
               Capture
             </Link>
           </nav>
@@ -49,14 +49,14 @@ export function AppShell({
         <div className="mx-auto flex max-w-sm items-center justify-around">
           <Link
             href="/"
-            className="flex flex-col items-center gap-1 text-xs text-muted-foreground"
+            className="flex flex-col items-center gap-1 text-xs text-muted-foreground active:scale-95 active:opacity-70"
           >
             <LayoutGrid className="size-5" />
             Prospects
           </Link>
           <Link
             href="/capture"
-            className="-mt-5 flex size-12 items-center justify-center rounded-md bg-primary text-primary-foreground shadow-sm"
+            className="-mt-5 flex size-12 items-center justify-center rounded-md bg-primary text-primary-foreground shadow-sm active:scale-90 active:opacity-80"
           >
             <Camera className="size-5" />
           </Link>
