@@ -212,16 +212,33 @@ export function GalleryPanel({
         <div className="mb-3 flex items-center justify-between">
           <h3 className="text-sm font-medium text-foreground">Sign captures</h3>
           {editing && (
-            <label className="text-sm text-primary underline">
-              <input
-                type="file"
-                accept="image/*"
-                capture="environment"
-                className="sr-only"
-                onChange={(e) => upload(e.target.files, "sign")}
-              />
-              Add another sign
-            </label>
+            <div className="flex flex-wrap gap-3">
+              <label className="text-sm text-primary underline">
+                <input
+                  type="file"
+                  accept="image/*"
+                  capture="environment"
+                  className="sr-only"
+                  onChange={(e) => {
+                    upload(e.target.files, "sign");
+                    e.target.value = "";
+                  }}
+                />
+                Take photo
+              </label>
+              <label className="text-sm text-primary underline">
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="sr-only"
+                  onChange={(e) => {
+                    upload(e.target.files, "sign");
+                    e.target.value = "";
+                  }}
+                />
+                From Photos
+              </label>
+            </div>
           )}
         </div>
         {signs.length === 0 ? (

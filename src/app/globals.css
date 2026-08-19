@@ -132,3 +132,12 @@ html {
   scrollbar-width: thin;
   scrollbar-color: var(--muted) transparent;
 }
+
+.scout-pin-map {
+  isolation: isolate;
+  z-index: 0;
+}
+.scout-pin-map .scout-marker {
+  background: none;
+  border: none;
+}

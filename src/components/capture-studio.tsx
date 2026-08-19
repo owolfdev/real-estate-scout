@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Camera, FileText, LoaderCircle, Sparkles } from "lucide-react";
+import { Camera, FileText, Images, LoaderCircle, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/field";
 import { PropertyForm } from "@/components/property-form";
@@ -110,7 +110,7 @@ export function CaptureStudio() {
             />
           </label>
 
-          <label className="flex cursor-pointer flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-border bg-card px-4 py-10 text-center active:scale-[0.99] active:bg-muted/50">
+          <div className="flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-border bg-card px-4 py-10 text-center">
             {signPreview ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -122,21 +122,47 @@ export function CaptureStudio() {
               <>
                 <Camera className="size-8 text-primary" />
                 <div>
-                  <p className="font-medium text-foreground">Photograph the sign</p>
+                  <p className="font-medium text-foreground">Add a photo of the sign</p>
                   <p className="mt-1 text-sm text-muted-foreground">
                     Thai text is translated. The original photo is kept.
                   </p>
                 </div>
               </>
             )}
-            <input
-              type="file"
-              accept="image/*"
-              capture="environment"
-              className="sr-only"
-              onChange={(e) => onSign(e.target.files?.[0] ?? null)}
-            />
-          </label>
+            <div className="flex flex-wrap justify-center gap-2">
+              <label className="active:scale-95">
+                <input
+                  type="file"
+                  accept="image/*"
+                  capture="environment"
+                  className="sr-only"
+                  onChange={(e) => {
+                    onSign(e.target.files?.[0] ?? null);
+                    e.target.value = "";
+                  }}
+                />
+                <span className="inline-flex h-9 cursor-pointer items-center gap-2 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground">
+                  <Camera className="size-4" />
+                  Take photo
+                </span>
+              </label>
+              <label className="active:scale-95">
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="sr-only"
+                  onChange={(e) => {
+                    onSign(e.target.files?.[0] ?? null);
+                    e.target.value = "";
+                  }}
+                />
+                <span className="inline-flex h-9 cursor-pointer items-center gap-2 rounded-md border border-border bg-background px-4 text-sm font-medium">
+                  <Images className="size-4" />
+                  From Photos
+                </span>
+              </label>
+            </div>
+          </div>
 
           <Button
             size="lg"

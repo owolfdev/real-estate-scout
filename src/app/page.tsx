@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { AppShell } from "@/components/app-shell";
-import { PropertyList } from "@/components/property-list";
+import { ProspectsExplorer } from "@/components/prospects-explorer";
 import { listProperties } from "@/lib/actions/properties";
 import { createClient } from "@/lib/supabase/server";
 import { hasSupabaseEnv } from "@/lib/utils";
@@ -38,7 +38,7 @@ export default async function HomePage() {
           New prospect
         </Link>
       </div>
-      <PropertyList properties={properties} />
+      <ProspectsExplorer properties={properties} />
     </AppShell>
   );
 }
